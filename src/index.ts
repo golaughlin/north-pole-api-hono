@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { children } from './children'
 
 const app = new Hono()
 
@@ -9,13 +10,14 @@ app.get('/', (c) => {
 
 // Get list of children on Santa's list
 app.get('/children', (c) => {
-  return c.text('List of naughty and nice children.')
+  return c.json(children)
 })
 
 // Get info on individual child.
 app.get('/children/:id', (c) => {
   const id = Number(c.req.param('id'))
-  return c.text(`Info on child ${id}`)
+  const child = children.find((chi) => chi.id === id)
+  return child ? c.json(child) : c.json({"message": `Could not find a child with the id of ${id}`}, 404)
 })
 
 // Add child to Sants's list
