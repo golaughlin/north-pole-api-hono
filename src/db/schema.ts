@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm"
 import { sqliteTable, integer, text } from "drizzle-orm/sqlite-core"
-import { drizzle } from "drizzle-orm/better-sqlite3"
-import { seed } from "drizzle-seed"
+//import { drizzle } from "drizzle-orm/better-sqlite3"
+//import { seed } from "drizzle-seed"
 
 export const children = sqliteTable("children", {
   id: integer().primaryKey({ autoIncrement: true }),
@@ -14,7 +14,7 @@ export const children = sqliteTable("children", {
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
 })
 
-async function main() {
+/*async function main() {
   const db = drizzle(process.env.DB_FILE_NAME!)
   await seed(db, { children }).refine((f) => ({
     children: {
@@ -29,4 +29,4 @@ async function main() {
   }))
 }
 
-main()
+main()*/
