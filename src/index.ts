@@ -34,10 +34,9 @@ app.get('/children/:id', async (c) => {
     .from(children)
     .where(eq(children.id, Number(id)))
 
-  return child ? c.json(child) : c.json(
-    { "messsage": `Could not find a child in Santa's list with an id of ${id}`}, 
-    404
-  )
+  return child.length > 0 
+    ? c.json(child) 
+    : c.json({ "messsage": `Could not find a child in Santa's list with an id of ${id}`}, 404)
 })
 
 // Add child to Sants's list
@@ -51,14 +50,14 @@ app.post('/children', async (c) => {
 
 // Update info of a child on Santa's list
 app.put('/children/:id', (c) => {
-  const id = Number(c.req.param('id'))
+  const id = c.req.param('id')
   return c.text(`Updated info on child ${id}.`)
 })
 
 // Remove child from Santa's list
 app.delete('/children/:id', async (c) => {
   const id = c.req.param('id')
-  const childToRemove = await db.delete(children)
+  await db.delete(children)
     .where(eq(children.id, Number(id)))
   return c.json({ "message": `Removed child ${id} from Santa's list.` })
 })
