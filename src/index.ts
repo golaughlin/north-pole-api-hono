@@ -1,9 +1,14 @@
 import { Hono } from 'hono'
 import { prettyJSON } from 'hono/pretty-json'
+import { drizzle } from 'drizzle-orm/bun-sqlite'
 import { Child, children } from './children'
 
+// Initialize app
 const app = new Hono()
 app.use(prettyJSON())
+
+// Add connection to SQLite DB via Drizzle ORM
+const db = drizzle(process.env.DB_FILE_NAME!)
 
 // Welcome message
 app.get('/', (c) => {
