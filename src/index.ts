@@ -1,7 +1,9 @@
 import { Hono } from 'hono'
-import { children } from './children'
+import { prettyJSON } from 'hono/pretty-json'
+import { Child, children } from './children'
 
 const app = new Hono()
+app.use(prettyJSON())
 
 // Welcome message
 app.get('/', (c) => {
@@ -21,8 +23,10 @@ app.get('/children/:id', (c) => {
 })
 
 // Add child to Sants's list
-app.post('/children', (c) => {
-  return c.text('Added child to Santa\'s list.')
+app.post('/children', async (c) => {
+  const child = await c.req.json<Child>()
+  children.push(child)
+  return c.json(child, 201)
 })
 
 // Update info of a child on Santa's list
